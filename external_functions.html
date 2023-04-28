@@ -1,0 +1,890 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      <link rel="icon" href="">
+    
+    
+      
+        <title>External Functions - XAD Documentation</title>
+      
+    
+    
+      
+        
+        
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+        <link rel="stylesheet" type="text/css" href="_static/sphinx_immaterial_theme.8118e13f191069ea1.min.css" />
+        <link rel="stylesheet" type="text/css" href="_static/table_styling.css" />
+        <link rel="stylesheet" type="text/css" href="_static/style.css" />
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+  
+
+
+  
+  
+
+
+  <script id="__analytics">function __md_analytics(){function n(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],n("js",new Date),n("config","G-RCTKTZ7HNW"),document.addEventListener("DOMContentLoaded",function(){document.forms.search&&document.forms.search.query.addEventListener("blur",function(){this.value&&n("event","search",{search_term:this.value})}),document$.subscribe(function(){var a=document.forms.feedback;if(void 0!==a)for(var e of a.querySelectorAll("[type=submit]"))e.addEventListener("click",function(e){e.preventDefault();var t=document.location.pathname,e=this.getAttribute("data-md-value");n("event","feedback",{page:t,data:e}),a.firstElementChild.disabled=!0;e=a.querySelector(".md-feedback__note [data-md-value='"+e+"']");e&&(e.hidden=!1)}),a.hidden=!1}),location$.subscribe(function(e){n("config","G-RCTKTZ7HNW",{page_path:e.pathname})})});var e=document.createElement("script");e.async=!0,e.src="https://www.googletagmanager.com/gtag/js?id=G-RCTKTZ7HNW",document.getElementById("__analytics").insertAdjacentElement("afterEnd",e)}</script>
+
+  
+    <script>"undefined"!=typeof __md_analytics&&__md_analytics()</script>
+  
+
+    
+    
+      
+        <meta  content="How to handle external functions in the XAD C++ automatic differentiation library."  name="description" >
+      
+    
+    
+
+
+
+<meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+<meta content="How to handle external functions in the XAD C++ automatic differentiation library." name="description" />
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="grey" data-md-color-accent="amber">
+  
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&"object"==typeof palette.color)for(var key of Object.keys(palette.color))document.body.setAttribute("data-md-color-"+key,palette.color[key])</script>
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#example-algorithm" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="XAD Documentation" class="md-header__button md-logo" aria-label="XAD Documentation" data-md-component="logo">
+      <img src="_static/logo.svg" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            XAD Documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              External Functions
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      <form class="md-header__option" data-md-component="palette">
+        
+          
+          
+          <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="grey" data-md-color-accent="amber"  aria-hidden="true"  type="radio" name="__palette" id="__palette_1">
+          
+        
+      </form>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7 0-.24-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91 1.61 0 2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08Z"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/xcelerit/xad/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    XAD
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="XAD Documentation" class="md-nav__button md-logo" aria-label="XAD Documentation" data-md-component="logo">
+      <img src="_static/logo.svg" alt="logo">
+    </a>
+    XAD Documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/xcelerit/xad/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    XAD
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="intro.html" class="md-nav__link">
+        <span class="md-ellipsis">Introduction</span>
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="aad.html" class="md-nav__link">
+        <span class="md-ellipsis">Algorithmic Differentiation Background</span>
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="basic.html" class="md-nav__link">
+        <span class="md-ellipsis">Basic Usage</span>
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          <span class="md-ellipsis">External Functions</span>
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        <span class="md-ellipsis">External Functions</span>
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">Example Algorithm</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-function-for-adjoint-mode" class="md-nav__link">
+    <span class="md-ellipsis">External Function For Adjoint Mode</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="External Function For Adjoint Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#computeexternal-method" class="md-nav__link">
+    <span class="md-ellipsis">compute<wbr>External Method</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computeadjoint-method" class="md-nav__link">
+    <span class="md-ellipsis">compute<wbr>Adjoint Method</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrapper-function" class="md-nav__link">
+    <span class="md-ellipsis">Wrapper Function</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-site" class="md-nav__link">
+    <span class="md-ellipsis">Call-<wbr>Site</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-function-for-forward-mode" class="md-nav__link">
+    <span class="md-ellipsis">External Function For Forward Mode</span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="checkpointing.html" class="md-nav__link">
+        <span class="md-ellipsis">Checkpointing</span>
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="higher_order.html" class="md-nav__link">
+        <span class="md-ellipsis">Higher-<wbr>Order Derivatives</span>
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="smoothed_math.html" class="md-nav__link">
+        <span class="md-ellipsis">Handling Discontinuities</span>
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="reference.html" class="md-nav__link">
+        <span class="md-ellipsis">Reference</span>
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="license.html" class="md-nav__link">
+        <span class="md-ellipsis">GNU Free Documentation License</span>
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#example-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">Example Algorithm</span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-function-for-adjoint-mode" class="md-nav__link">
+    <span class="md-ellipsis">External Function For Adjoint Mode</span>
+  </a>
+  
+    <nav class="md-nav" aria-label="External Function For Adjoint Mode">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#computeexternal-method" class="md-nav__link">
+    <span class="md-ellipsis">compute<wbr>External Method</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#computeadjoint-method" class="md-nav__link">
+    <span class="md-ellipsis">compute<wbr>Adjoint Method</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#wrapper-function" class="md-nav__link">
+    <span class="md-ellipsis">Wrapper Function</span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#call-site" class="md-nav__link">
+    <span class="md-ellipsis">Call-<wbr>Site</span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#external-function-for-forward-mode" class="md-nav__link">
+    <span class="md-ellipsis">External Function For Forward Mode</span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                  
+
+
+<h1 id="external-functions"><span id="external"></span>External Functions<a class="headerlink" href="#external-functions" title="Permalink to this heading">¶</a></h1>
+<p>Often parts of the algorithm to be differentiated are not available
+in source code.
+For example, a routine from an external math library may be called.
+Reimplementing it may not be desirable (for performance or development effort reasons),
+in which case the derivatives of this function need to be implemented
+manually in some form.</p>
+<p>This can be achieved by either:</p>
+<ul class="simple">
+<li><p>Applying finite differences to the library function (bumping),</p></li>
+<li><p>Implementing the adjoint code of the function by hand, or</p></li>
+<li><p>Computing the derivatives analytically, possibly using other library functions.</p></li>
+</ul>
+<p>In these cases,
+the <em>external function interface</em> of XAD can be used to integrate
+the manual derivatives, which is described below.
+With the same technique,
+performance- or memory-critical parts of the application may be hand-tuned.</p>
+<h2 id="example-algorithm">Example Algorithm<a class="headerlink" href="#example-algorithm" title="Permalink to this heading">¶</a></h2>
+<p>We pick an example algorithm which computes the length of a multi dimensional
+vector.
+This is defined as:</p>
+<div class="math">
+<p><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4KPCEtLSBUaGlzIGZpbGUgd2FzIGdlbmVyYXRlZCBieSBkdmlzdmdtIDIuMTMuMSAtLT4KPHN2ZyB2ZXJzaW9uPScxLjEnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZycgeG1sbnM6eGxpbms9J2h0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsnIHdpZHRoPSc4Ny4zODA3NzJwdCcgaGVpZ2h0PSc1Ny4zODUzOTFwdCcgdmlld0JveD0nMTUwLjU4MTA4OCAtNTcuMzg1MzkxIDg3LjM4MDc3MiA1Ny4zODUzOTEnPgo8ZGVmcz4KPHBhdGggaWQ9J2c0LTQ4JyBkPSdNNS4xMzI3My0zLjU3MDU5NUM1LjEzMjczLTQuNDYzMjQzIDUuMDc2OTM5LTUuMzU1ODkyIDQuNjg2NDA1LTYuMTgxNTkyQzQuMTczMTMyLTcuMjUyNzcgMy4yNTgxNjgtNy40MzEzIDIuNzg5NTI3LTcuNDMxM0MyLjEyMDA0MS03LjQzMTMgMS4zMDU0OTktNy4xNDExODkgLjg0ODAxNi02LjEwMzQ4NUMuNDkwOTU3LTUuMzMzNTc2IC40MzUxNjYtNC40NjMyNDMgLjQzNTE2Ni0zLjU3MDU5NUMuNDM1MTY2LTIuNzMzNzM3IC40Nzk3OTktMS43Mjk1MDcgLjkzNzI4MS0uODgxNDkxQzEuNDE3MDggLjAyMjMxNiAyLjIzMTYyMiAuMjQ1NDc4IDIuNzc4MzY5IC4yNDU0NzhDMy4zODA5MDcgLjI0NTQ3OCA0LjIyODkyMyAuMDExMTU4IDQuNzE5ODgtMS4wNDg4NjJDNS4wNzY5MzktMS44MTg3NzIgNS4xMzI3My0yLjY4OTEwNCA1LjEzMjczLTMuNTcwNTk1Wk0yLjc3ODM2OSAwQzIuMzQzMjAzIDAgMS42ODQ4NzQtLjI3ODk1MyAxLjQ4NDAyOC0xLjM1MDEzMUMxLjM2MTI4OS0yLjAxOTYxOCAxLjM2MTI4OS0zLjA0NjE2NCAxLjM2MTI4OS0zLjcwNDQ5MkMxLjM2MTI4OS00LjQxODYxMSAxLjM2MTI4OS01LjE1NTA0NiAxLjQ1MDU1NC01Ljc1NzU4NEMxLjY2MjU1OC03LjA4NTM5OSAyLjQ5OTQxNi03LjE4NTgyMiAyLjc3ODM2OS03LjE4NTgyMkMzLjE0NjU4Ny03LjE4NTgyMiAzLjg4MzAyMi02Ljk4NDk3NiA0LjA5NTAyNi01Ljg4MDMyM0M0LjIwNjYwNy01LjI1NTQ2OSA0LjIwNjYwNy00LjQwNzQ1MyA0LjIwNjYwNy0zLjcwNDQ5MkM0LjIwNjYwNy0yLjg2NzYzNCA0LjIwNjYwNy0yLjEwODg4MiA0LjA4Mzg2OC0xLjM5NDc2NEMzLjkxNjQ5Ni0uMzM0NzQzIDMuMjgwNDg0IDAgMi43NzgzNjkgMFonLz4KPHBhdGggaWQ9J2c0LTQ5JyBkPSdNMy4yODA0ODQtNy4xNDExODlDMy4yODA0ODQtNy40MDg5ODQgMy4yODA0ODQtNy40MzEzIDMuMDIzODQ3LTcuNDMxM0MyLjMzMjA0NS02LjcxNzE4MSAxLjM1MDEzMS02LjcxNzE4MSAuOTkzMDcyLTYuNzE3MTgxVi02LjM3MTI4QzEuMjE2MjM0LTYuMzcxMjggMS44NzQ1NjItNi4zNzEyOCAyLjQ1NDc4NC02LjY2MTM5MVYtLjg4MTQ5MUMyLjQ1NDc4NC0uNDc5Nzk5IDIuNDIxMzA5LS4zNDU5MDEgMS40MTcwOC0uMzQ1OTAxSDEuMDYwMDJWMEMxLjQ1MDU1NC0uMDMzNDc0IDIuNDIxMzA5LS4wMzM0NzQgMi44Njc2MzQtLjAzMzQ3NFM0LjI4NDcxNC0uMDMzNDc0IDQuNjc1MjQ3IDBWLS4zNDU5MDFINC4zMTgxODhDMy4zMTM5NTgtLjM0NTkwMSAzLjI4MDQ4NC0uNDY4NjQxIDMuMjgwNDg0LS44ODE0OTFWLTcuMTQxMTg5WicvPgo8cGF0aCBpZD0nZzQtNTAnIGQ9J00xLjQxNzA4LS44NTkxNzRMMi41OTk4MzktMi4wMDg0NTlDNC4zNDA1MDQtMy41NDgyNzggNS4wMDk5OTEtNC4xNTA4MTYgNS4wMDk5OTEtNS4yNjY2MjdDNS4wMDk5OTEtNi41Mzg2NTEgNC4wMDU3NjEtNy40MzEzIDIuNjQ0NDcyLTcuNDMxM0MxLjM4MzYwNS03LjQzMTMgLjU1NzkwNS02LjQwNDc1NCAuNTU3OTA1LTUuNDExNjgzQy41NTc5MDUtNC43ODY4MjggMS4xMTU4MTEtNC43ODY4MjggMS4xNDkyODUtNC43ODY4MjhDMS4zMzg5NzMtNC43ODY4MjggMS43Mjk1MDctNC45MjA3MjYgMS43Mjk1MDctNS4zNzgyMDhDMS43Mjk1MDctNS42NjgzMTkgMS41Mjg2NjEtNS45NTg0MyAxLjEzODEyNy01Ljk1ODQzQzEuMDQ4ODYyLTUuOTU4NDMgMS4wMjY1NDYtNS45NTg0MyAuOTkzMDcyLTUuOTQ3MjcyQzEuMjQ5NzA4LTYuNjcyNTQ5IDEuODUyMjQ2LTcuMDg1Mzk5IDIuNDk5NDE2LTcuMDg1Mzk5QzMuNTE0ODA0LTcuMDg1Mzk5IDMuOTk0NjAzLTYuMTgxNTkyIDMuOTk0NjAzLTUuMjY2NjI3QzMuOTk0NjAzLTQuMzczOTc4IDMuNDM2Njk3LTMuNDkyNDg4IDIuODIzMDAxLTIuODAwNjg1TC42ODA2NDUtLjQxMjg1Qy41NTc5MDUtLjI5MDExMSAuNTU3OTA1LS4yNjc3OTUgLjU1NzkwNSAwSDQuNjk3NTY0TDUuMDA5OTkxLTEuOTQxNTExSDQuNzMxMDM4QzQuNjc1MjQ3LTEuNjA2NzY4IDQuNTk3MTQxLTEuMTE1ODExIDQuNDg1NTYtLjk0ODQzOUM0LjQwNzQ1My0uODU5MTc0IDMuNjcxMDE4LS44NTkxNzQgMy40MjU1MzktLjg1OTE3NEgxLjQxNzA4WicvPgo8cGF0aCBpZD0nZzEtMCcgZD0nTTcuMzUzMTkzLTIuNTY2MzY1QzcuNTQyODgxLTIuNTY2MzY1IDcuNzQzNzI3LTIuNTY2MzY1IDcuNzQzNzI3LTIuNzg5NTI3UzcuNTQyODgxLTMuMDEyNjg5IDcuMzUzMTkzLTMuMDEyNjg5SDEuMzE2NjU3QzEuMTI2OTY5LTMuMDEyNjg5IC45MjYxMjMtMy4wMTI2ODkgLjkyNjEyMy0yLjc4OTUyN1MxLjEyNjk2OS0yLjU2NjM2NSAxLjMxNjY1Ny0yLjU2NjM2NUg3LjM1MzE5M1onLz4KPHBhdGggaWQ9J2cyLTc4JyBkPSdNOC40MzU1My02LjQ0OTM4N0M4LjU0NzExMS02Ljg5NTcxMSA4Ljc0Nzk1Ny03LjI0MTYxMiA5LjY0MDYwNi03LjI3NTA4N0M5LjY5NjM5Ni03LjI3NTA4NyA5LjgzMDI5My03LjI4NjI0NSA5LjgzMDI5My03LjQ5ODI0OUM5LjgzMDI5My03LjUwOTQwNyA5LjgzMDI5My03LjYyMDk4OCA5LjY4NTIzOC03LjYyMDk4OEM5LjMxNzAyLTcuNjIwOTg4IDguOTI2NDg3LTcuNTg3NTE0IDguNTU4MjY5LTcuNTg3NTE0QzguMTc4ODkzLTcuNTg3NTE0IDcuNzg4MzYtNy42MjA5ODggNy40MjAxNDItNy42MjA5ODhDNy4zNTMxOTMtNy42MjA5ODggNy4yMTkyOTYtNy42MjA5ODggNy4yMTkyOTYtNy4zOTc4MjZDNy4yMTkyOTYtNy4yNzUwODcgNy4zMzA4NzctNy4yNzUwODcgNy40MjAxNDItNy4yNzUwODdDOC4wNTYxNTQtNy4yNjM5MjggOC4xNzg4OTMtNy4wMjk2MDggOC4xNzg4OTMtNi43ODQxM0M4LjE3ODg5My02Ljc1MDY1NiA4LjE1NjU3Ny02LjU4MzI4NCA4LjE0NTQxOS02LjU0OTgxTDYuODk1NzExLTEuNTg0NDUxTDQuNDI5NzY5LTcuNDA4OTg0QzQuMzQwNTA0LTcuNjA5ODMgNC4zMjkzNDYtNy42MjA5ODggNC4wNzI3MS03LjYyMDk4OEgyLjU3NzUyM0MyLjM1NDM2MS03LjYyMDk4OCAyLjI1MzkzOC03LjYyMDk4OCAyLjI1MzkzOC03LjM5NzgyNkMyLjI1MzkzOC03LjI3NTA4NyAyLjM1NDM2MS03LjI3NTA4NyAyLjU2NjM2NS03LjI3NTA4N0MyLjYyMjE1NS03LjI3NTA4NyAzLjMyNTExNi03LjI3NTA4NyAzLjMyNTExNi03LjE3NDY2NEwxLjgyOTkzLTEuMTgyNzU5QzEuNzE4MzQ5LS43MzY0MzUgMS41Mjg2NjEtLjM3OTM3NiAuNjI0ODU0LS4zNDU5MDFDLjU1NzkwNS0uMzQ1OTAxIC40MzUxNjYtLjMzNDc0MyAuNDM1MTY2LS4xMjI3MzlDLjQzNTE2Ni0uMDQ0NjMyIC40OTA5NTcgMCAuNTgwMjIyIDBDLjkzNzI4MSAwIDEuMzI3ODE1LS4wMzM0NzQgMS42OTYwMzItLjAzMzQ3NEMyLjA3NTQwOC0uMDMzNDc0IDIuNDc3MSAwIDIuODQ1MzE4IDBDMi45MDExMDggMCAzLjA0NjE2NCAwIDMuMDQ2MTY0LS4yMjMxNjJDMy4wNDYxNjQtLjMzNDc0MyAyLjk0NTc0MS0uMzQ1OTAxIDIuODIzMDAxLS4zNDU5MDFDMi4xNzU4MzEtLjM2ODIxOCAyLjA4NjU2Ni0uNjEzNjk2IDIuMDg2NTY2LS44MzY4NThDMi4wODY1NjYtLjkxNDk2NSAyLjA5NzcyNC0uOTcwNzU1IDIuMTMxMTk5LTEuMDkzNDk1TDMuNjA0MDY5LTYuOTg0OTc2QzMuNjQ4NzAxLTYuOTE4MDI3IDMuNjQ4NzAxLTYuODk1NzExIDMuNzA0NDkyLTYuNzg0MTNMNi40ODI4NjEtLjIxMjAwNEM2LjU2MDk2OC0uMDIyMzE2IDYuNTk0NDQyIDAgNi42OTQ4NjUgMEM2LjgxNzYwNCAwIDYuODE3NjA0LS4wMzM0NzQgNi44NzMzOTUtLjIzNDMyTDguNDM1NTMtNi40NDkzODdaJy8+CjxwYXRoIGlkPSdnMi0xMDUnIGQ9J00zLjE2ODkwMy02Ljk3MzgxOEMzLjE2ODkwMy03LjE5Njk4IDMuMDEyNjg5LTcuMzc1NTEgMi43NTYwNTMtNy4zNzU1MUMyLjQ1NDc4NC03LjM3NTUxIDIuMTUzNTE1LTcuMDg1Mzk5IDIuMTUzNTE1LTYuNzg0MTNDMi4xNTM1MTUtNi41NzIxMjYgMi4zMDk3MjgtNi4zODI0MzggMi41Nzc1MjMtNi4zODI0MzhDMi44MzQxNTktNi4zODI0MzggMy4xNjg5MDMtNi42MzkwNzQgMy4xNjg5MDMtNi45NzM4MThaTTIuMzIwODg3LTIuNzc4MzY5QzIuNDU0Nzg0LTMuMTAxOTU0IDIuNDU0Nzg0LTMuMTI0MjcgMi41NjYzNjUtMy40MjU1MzlDMi42NTU2My0zLjY0ODcwMSAyLjcxMTQyLTMuODA0OTE1IDIuNzExNDItNC4wMTY5MTlDMi43MTE0Mi00LjUxOTAzNCAyLjM1NDM2MS00LjkzMTg4NCAxLjc5NjQ1NS00LjkzMTg4NEMuNzQ3NTkzLTQuOTMxODg0IC4zMjM1ODUtMy4zMTM5NTggLjMyMzU4NS0zLjIxMzUzNUMuMzIzNTg1LTMuMTAxOTU0IC40MzUxNjYtMy4xMDE5NTQgLjQ1NzQ4Mi0zLjEwMTk1NEMuNTY5MDY0LTMuMTAxOTU0IC41ODAyMjItMy4xMjQyNyAuNjM2MDEyLTMuMzAyOEMuOTM3MjgxLTQuMzUxNjYyIDEuMzgzNjA1LTQuNjg2NDA1IDEuNzYyOTgxLTQuNjg2NDA1QzEuODUyMjQ2LTQuNjg2NDA1IDIuMDQxOTM0LTQuNjg2NDA1IDIuMDQxOTM0LTQuMzI5MzQ2QzIuMDQxOTM0LTQuMDk1MDI2IDEuOTYzODI3LTMuODYwNzA1IDEuOTE5MTk1LTMuNzQ5MTI0QzEuODI5OTMtMy40NTkwMTQgMS4zMjc4MTUtMi4xNjQ2NzMgMS4xNDkyODUtMS42ODQ4NzRDMS4wMzc3MDQtMS4zOTQ3NjQgLjg5MjY0OS0xLjAyNjU0NiAuODkyNjQ5LS43OTIyMjZDLjg5MjY0OS0uMjY3Nzk1IDEuMjcyMDI0IC4xMjI3MzkgMS44MDc2MTQgLjEyMjczOUMyLjg1NjQ3NiAuMTIyNzM5IDMuMjY5MzI2LTEuNDk1MTg3IDMuMjY5MzI2LTEuNTk1NjA5QzMuMjY5MzI2LTEuNzA3MTkxIDMuMTY4OTAzLTEuNzA3MTkxIDMuMTM1NDI4LTEuNzA3MTkxQzMuMDIzODQ3LTEuNzA3MTkxIDMuMDIzODQ3LTEuNjczNzE2IDIuOTY4MDU3LTEuNTA2MzQ1QzIuNzY3MjExLS44MDMzODQgMi4zOTg5OTMtLjEyMjczOSAxLjgyOTkzLS4xMjI3MzlDMS42NDAyNDItLjEyMjczOSAxLjU2MjEzNS0uMjM0MzIgMS41NjIxMzUtLjQ5MDk1N0MxLjU2MjEzNS0uNzY5OTA5IDEuNjI5MDg0LS45MjYxMjMgMS44ODU3Mi0xLjYwNjc2OEwyLjMyMDg4Ny0yLjc3ODM2OVonLz4KPHBhdGggaWQ9J2cwLTg4JyBkPSdNMjAuMTgwMzI0IDIyLjMxNjMxNEwyMi4xMDkwOTEgMTcuMjE1NDQySDIxLjcxMDU4NUMyMS4wODg5MTcgMTguODczMjI1IDE5LjM5OTI1MyAxOS45NTcxNjEgMTcuNTY2MTI3IDIwLjQzNTM2N0MxNy4yMzEzODIgMjAuNTE1MDY4IDE1LjY2OTI0IDIwLjkyOTUxNCAxMi42MDg3MTcgMjAuOTI5NTE0SDIuOTk2NzYyTDExLjExMDMzNiAxMS40MTMyQzExLjIyMTkxOCAxMS4yODU2NzkgMTEuMjUzNzk4IDExLjIzNzg1OCAxMS4yNTM3OTggMTEuMTU4MTU3QzExLjI1Mzc5OCAxMS4xMjYyNzYgMTEuMjUzNzk4IDExLjA3ODQ1NiAxMS4xNDIyMTcgMTAuOTE5MDU0TDMuNzE0MDcyIC43NjUxMzFIMTIuNDQ5MzE1QzE0LjU4NTMwNSAuNzY1MTMxIDE2LjAzNTg2NiAuOTg4Mjk0IDE2LjE3OTMyOCAxLjAyMDE3NEMxNy4wNDAxIDEuMTQ3Njk2IDE4LjQyNjg5OSAxLjQxODY4IDE5LjY4NjE3NyAyLjIxNTY5MUMyMC4wODQ2ODIgMi40NzA3MzUgMjEuMTY4NjE4IDMuMTg4MDQ1IDIxLjcxMDU4NSA0LjQ3OTIwM0gyMi4xMDkwOTFMMjAuMTgwMzI0IDBIMS4zMzg5NzlDLjk3MjM1NCAwIC45NTY0MTMgLjAxNTk0IC45MDg1OTMgLjExMTU4MkMuODkyNjUzIC4xNTk0MDIgLjg5MjY1MyAuNDYyMjY3IC44OTI2NTMgLjYzNzYwOUw5LjMyNTAzMSAxMi4xNzgzMzFMMS4wNjc5OTUgMjEuODU0MDQ3Qy45MDg1OTMgMjIuMDQ1MzMgLjkwODU5MyAyMi4xMjUwMzEgLjkwODU5MyAyMi4xNDA5NzFDLjkwODU5MyAyMi4zMTYzMTQgMS4wNTIwNTUgMjIuMzE2MzE0IDEuMzM4OTc5IDIyLjMxNjMxNEgyMC4xODAzMjRaJy8+CjxwYXRoIGlkPSdnMC0xMTYnIGQ9J00xMS4xOTAwMzcgMjguNjkyNDAzQzExLjc5NTc2NiAyOC42OTI0MDMgMTEuODI3NjQ2IDI4LjU5Njc2MiAxMS44Mjc2NDYgMjguMTE4NTU1Vi4yMzkxMDNDMTEuODI3NjQ2LS4wMzE4OCAxMS44Mjc2NDYtLjMxODgwNCAxMS41MDg4NDItLjMxODgwNFMxMS4xOTAwMzctLjAzMTg4IDExLjE5MDAzNyAuMjM5MTAzVjI0LjYyNzY0NkgxMS4xNzQwOTdMMy45ODUwNTYgMi44MzczNkwxLjc2OTM2NSA3LjE4OTA0MUwyLjAwODQ2OCA3LjQ0NDA4NUwzLjMzMTUwNyA0Ljg2MTc2OEwxMS4xOTAwMzcgMjguNjkyNDAzWicvPgo8cGF0aCBpZD0nZzAtMTE3JyBkPSdNMTEuMTkwMDM3IDkuMzI1MDMxQzExLjE5MDAzNyA5LjU5NjAxNSAxMS4xOTAwMzcgOS44ODI5MzkgMTEuNTA4ODQyIDkuODgyOTM5UzExLjgyNzY0NiA5LjU5NjAxNSAxMS44Mjc2NDYgOS4zMjUwMzFWLjIzOTEwM0MxMS44Mjc2NDYtLjAzMTg4IDExLjgyNzY0Ni0uMzE4ODA0IDExLjUwODg0Mi0uMzE4ODA0UzExLjE5MDAzNy0uMDMxODggMTEuMTkwMDM3IC4yMzkxMDNWOS4zMjUwMzFaJy8+CjxwYXRoIGlkPSdnMC0xMTgnIGQ9J00xMS43NjM4ODUtLjYzNzYwOUMxMS4yNTM3OTgtLjYzNzYwOSAxMS4xOTAwMzctLjU4OTc4OCAxMS4xOTAwMzctLjA2Mzc2MVY4LjY4NzQyMkMxMS4xOTAwMzcgOC45NTg0MDYgMTEuMTkwMDM3IDkuMjQ1MzMgMTEuNTA4ODQyIDkuMjQ1MzNTMTEuODI3NjQ2IDguOTU4NDA2IDExLjgyNzY0NiA4LjY4NzQyMlYwSDE2LjU5Mzc3M0MxNi44NjQ3NTcgMCAxNy4xNTE2ODEgMCAxNy4xNTE2ODEtLjMxODgwNFMxNi44NjQ3NTctLjYzNzYwOSAxNi41OTM3NzMtLjYzNzYwOUgxMS43NjM4ODVaJy8+CjxwYXRoIGlkPSdnNS02MScgZD0nTTEwLjI0OTU2NC01LjExNjgxMkMxMC40ODg2NjctNS4xMTY4MTIgMTAuNzI3NzcxLTUuMTE2ODEyIDEwLjcyNzc3MS01LjM4Nzc5NkMxMC43Mjc3NzEtNS42NzQ3MiAxMC40NTY3ODctNS42NzQ3MiAxMC4xODU4MDMtNS42NzQ3MkgxLjI3NTIxOEMxLjAwNDIzNC01LjY3NDcyIC43MzMyNS01LjY3NDcyIC43MzMyNS01LjM4Nzc5NkMuNzMzMjUtNS4xMTY4MTIgLjk3MjM1NC01LjExNjgxMiAxLjIxMTQ1Ny01LjExNjgxMkgxMC4yNDk1NjRaTTEwLjE4NTgwMy0yLjI3OTQ1MkMxMC40NTY3ODctMi4yNzk0NTIgMTAuNzI3NzcxLTIuMjc5NDUyIDEwLjcyNzc3MS0yLjU2NjM3NkMxMC43Mjc3NzEtMi44MzczNiAxMC40ODg2NjctMi44MzczNiAxMC4yNDk1NjQtMi44MzczNkgxLjIxMTQ1N0MuOTcyMzU0LTIuODM3MzYgLjczMzI1LTIuODM3MzYgLjczMzI1LTIuNTY2Mzc2Qy43MzMyNS0yLjI3OTQ1MiAxLjAwNDIzNC0yLjI3OTQ1MiAxLjI3NTIxOC0yLjI3OTQ1MkgxMC4xODU4MDNaJy8+CjxwYXRoIGlkPSdnMy0xMjAnIGQ9J003LjU1NTY2Ni02LjUwMzYxMUM3LjA0NTU3OS02LjQwNzk3IDYuODU0Mjk2LTYuMDI1NDA1IDYuODU0Mjk2LTUuNzIyNTRDNi44NTQyOTYtNS4zMzk5NzUgNy4xNTcxNjEtNS4yMTI0NTMgNy4zODAzMjQtNS4yMTI0NTNDNy44NTg1MzEtNS4yMTI0NTMgOC4xOTMyNzUtNS42MjY4OTkgOC4xOTMyNzUtNi4wNTcyODVDOC4xOTMyNzUtNi43MjY3NzUgNy40MjgxNDQtNy4wMjk2MzkgNi43NTg2NTUtNy4wMjk2MzlDNS43ODYzMDEtNy4wMjk2MzkgNS4yNDQzMzQtNi4wNzMyMjUgNS4xMDA4NzItNS43NzAzNjFDNC43MzQyNDctNi45NjU4NzggMy43NDU5NTMtNy4wMjk2MzkgMy40NTkwMjktNy4wMjk2MzlDMS44MzMxMjYtNy4wMjk2MzkgLjk3MjM1NC00Ljk0MTQ2OSAuOTcyMzU0LTQuNTkwNzg1Qy45NzIzNTQtNC41MjcwMjQgMS4wMzYxMTUtNC40NDczMjMgMS4xNDc2OTYtNC40NDczMjNDMS4yNzUyMTgtNC40NDczMjMgMS4zMDcwOTgtNC41NDI5NjQgMS4zMzg5NzktNC42MDY3MjVDMS44ODA5NDYtNi4zNzYwOSAyLjk0ODk0MS02LjcxMDgzNCAzLjQxMTIwOC02LjcxMDgzNEM0LjEyODUxOC02LjcxMDgzNCA0LjI3MTk4LTYuMDQxMzQ1IDQuMjcxOTgtNS42NTg3OEM0LjI3MTk4LTUuMzA4MDk1IDQuMTc2MzM5LTQuOTQxNDY5IDMuOTg1MDU2LTQuMTc2MzM5TDMuNDQzMDg4LTEuOTkyNTI4QzMuMjAzOTg1LTEuMDM2MTE1IDIuNzQxNzE5LS4xNTk0MDIgMS44OTY4ODctLjE1OTQwMkMxLjgxNzE4Ni0uMTU5NDAyIDEuNDE4NjgtLjE1OTQwMiAxLjA4MzkzNS0uMzY2NjI1QzEuNjU3NzgzLS40NzgyMDcgMS43ODUzMDUtLjk1NjQxMyAxLjc4NTMwNS0xLjE0NzY5NkMxLjc4NTMwNS0xLjQ2NjUwMSAxLjU0NjIwMi0xLjY1Nzc4MyAxLjI0MzMzNy0xLjY1Nzc4M0MuODYwNzcyLTEuNjU3NzgzIC40NDYzMjYtMS4zMjMwMzkgLjQ0NjMyNi0uODEyOTUxQy40NDYzMjYtLjE0MzQ2MiAxLjE5NTUxNyAuMTU5NDAyIDEuODgwOTQ2IC4xNTk0MDJDMi42NDYwNzcgLjE1OTQwMiAzLjE4ODA0NS0uNDQ2MzI2IDMuNTIyNzktMS4wOTk4NzVDMy43Nzc4MzMtLjE1OTQwMiA0LjU3NDg0NCAuMTU5NDAyIDUuMTY0NjMzIC4xNTk0MDJDNi43OTA1MzUgLjE1OTQwMiA3LjY1MTMwOC0xLjkyODc2NyA3LjY1MTMwOC0yLjI3OTQ1MkM3LjY1MTMwOC0yLjM1OTE1MyA3LjU4NzU0Ny0yLjQyMjkxNCA3LjQ5MTkwNS0yLjQyMjkxNEM3LjM0ODQ0My0yLjQyMjkxNCA3LjMzMjUwMy0yLjM0MzIxMyA3LjI4NDY4Mi0yLjIxNTY5MUM2Ljg1NDI5Ni0uODEyOTUxIDUuOTI5NzYzLS4xNTk0MDIgNS4yMTI0NTMtLjE1OTQwMkM0LjY1NDU0NS0uMTU5NDAyIDQuMzUxNjgxLS41NzM4NDggNC4zNTE2ODEtMS4yMjczOTdDNC4zNTE2ODEtMS41NzgwODIgNC40MTU0NDItMS44MzMxMjYgNC42NzA0ODYtMi44ODUxODFMNS4yMjgzOTQtNS4wNTMwNTFDNS40Njc0OTctNi4wMDk0NjUgNi4wMDk0NjUtNi43MTA4MzQgNi43NDI3MTUtNi43MTA4MzRDNi43NzQ1OTUtNi43MTA4MzQgNy4yMjA5MjItNi43MTA4MzQgNy41NTU2NjYtNi41MDM2MTFaJy8+CjxwYXRoIGlkPSdnMy0xMjEnIGQ9J000LjE5MjI3OSAxLjc4NTMwNUMzLjc2MTg5MyAyLjM5MTAzNCAzLjE0MDIyNCAyLjkzMzAwMSAyLjM1OTE1MyAyLjkzMzAwMUMyLjE2Nzg3IDIuOTMzMDAxIDEuNDAyNzQgMi45MDExMjEgMS4xNjM2MzYgMi4xNjc4N0MxLjIxMTQ1NyAyLjE4MzgxMSAxLjI5MTE1OCAyLjE4MzgxMSAxLjMyMzAzOSAyLjE4MzgxMUMxLjgwMTI0NSAyLjE4MzgxMSAyLjEyMDA1IDEuNzY5MzY1IDIuMTIwMDUgMS40MDI3NFMxLjgxNzE4NiAuOTA4NTkzIDEuNTc4MDgyIC45MDg1OTNDMS4zMjMwMzkgLjkwODU5MyAuNzY1MTMxIDEuMDk5ODc1IC43NjUxMzEgMS44ODA5NDZDLjc2NTEzMSAyLjY5Mzg5OCAxLjQ1MDU2IDMuMjUxODA2IDIuMzU5MTUzIDMuMjUxODA2QzMuOTUzMTc2IDMuMjUxODA2IDUuNTYzMTM4IDEuNzg1MzA1IDYuMDA5NDY1IC4wMTU5NEw3LjU3MTYwNi02LjIwMDc0N0M3LjU4NzU0Ny02LjI4MDQ0OCA3LjYxOTQyNy02LjM3NjA5IDcuNjE5NDI3LTYuNDcxNzMxQzcuNjE5NDI3LTYuNzEwODM0IDcuNDI4MTQ0LTYuODcwMjM3IDcuMTg5MDQxLTYuODcwMjM3QzcuMDQ1NTc5LTYuODcwMjM3IDYuNzEwODM0LTYuODA2NDc2IDYuNTgzMzEzLTYuMzI4MjY5TDUuNDAzNzM2LTEuNjQxODQzQzUuMzI0MDM1LTEuMzU0OTE5IDUuMzI0MDM1LTEuMzIzMDM5IDUuMTk2NTEzLTEuMTQ3Njk2QzQuODc3NzA5LS43MDEzNyA0LjM1MTY4MS0uMTU5NDAyIDMuNTg2NTUtLjE1OTQwMkMyLjY5Mzg5OC0uMTU5NDAyIDIuNjE0MTk3LTEuMDM2MTE1IDIuNjE0MTk3LTEuNDY2NTAxQzIuNjE0MTk3LTIuMzc1MDkzIDMuMDQ0NTgzLTMuNjAyNDkxIDMuNDc0OTY5LTQuNzUwMTg3QzMuNjUwMzExLTUuMjEyNDUzIDMuNzQ1OTUzLTUuNDM1NjE2IDMuNzQ1OTUzLTUuNzU0NDIxQzMuNzQ1OTUzLTYuNDIzOTEgMy4yNjc3NDYtNy4wMjk2MzkgMi40ODY2NzUtNy4wMjk2MzlDMS4wMjAxNzQtNy4wMjk2MzkgLjQzMDM4Ni00LjcxODMwNiAuNDMwMzg2LTQuNTkwNzg1Qy40MzAzODYtNC41MjcwMjQgLjQ5NDE0Ny00LjQ0NzMyMyAuNjA1NzI5LTQuNDQ3MzIzQy43NDkxOTEtNC40NDczMjMgLjc2NTEzMS00LjUxMTA4MyAuODI4ODkyLTQuNzM0MjQ3QzEuMjExNDU3LTYuMDczMjI1IDEuODE3MTg2LTYuNzEwODM0IDIuNDM4ODU0LTYuNzEwODM0QzIuNTgyMzE2LTYuNzEwODM0IDIuODUzMy02LjcxMDgzNCAyLjg1MzMtNi4xODQ4MDdDMi44NTMzLTUuNzcwMzYxIDIuNjc3OTU4LTUuMzA4MDk1IDIuNDM4ODU0LTQuNzAyMzY2QzEuNjU3NzgzLTIuNjE0MTk3IDEuNjU3NzgzLTIuMDg4MTY5IDEuNjU3NzgzLTEuNzA1NjA0QzEuNjU3NzgzLS4xOTEyODMgMi43NDE3MTkgLjE1OTQwMiAzLjUzODczIC4xNTk0MDJDNC4wMDA5OTYgLjE1OTQwMiA0LjU3NDg0NCAuMDE1OTQgNS4xMzI3NTItLjU3Mzg0OEw1LjE0ODY5Mi0uNTU3OTA4QzQuOTA5NTg5IC4zODI1NjUgNC43NTAxODcgMS4wMDQyMzQgNC4xOTIyNzkgMS43ODUzMDVaJy8+CjwvZGVmcz4KPGcgaWQ9J3BhZ2UxJz4KPHVzZSB4PScxNTAuNTgxMDg4JyB5PSctMjIuNzI5NTIzJyB4bGluazpocmVmPScjZzMtMTIxJy8+Cjx1c2UgeD0nMTYzLjE5MTExOScgeT0nLTIyLjcyOTUyMycgeGxpbms6aHJlZj0nI2c1LTYxJy8+Cjx1c2UgeD0nMTc5LjA5MzMwOCcgeT0nLTU2Ljc0Nzc5OCcgeGxpbms6aHJlZj0nI2cwLTExOCcvPgo8dXNlIHg9JzE3OS4wOTMzMDgnIHk9Jy00Ny44MjExNTknIHhsaW5rOmhyZWY9JyNnMC0xMTcnLz4KPHVzZSB4PScxNzkuMDkzMzA4JyB5PSctMzguMjU2OTI3JyB4bGluazpocmVmPScjZzAtMTE3Jy8+Cjx1c2UgeD0nMTc5LjA5MzMwOCcgeT0nLTI4LjY5MjY5NScgeGxpbms6aHJlZj0nI2cwLTExNicvPgo8cmVjdCB4PScxOTUuOTE5MTU4JyB5PSctNTcuMzg1MzkxJyBoZWlnaHQ9Jy42Mzc1OTMnIHdpZHRoPSc0Mi4wNDI3MDMnLz4KPHVzZSB4PScxOTUuOTE5MTU4JyB5PSctNDIuNjU0OTA5JyB4bGluazpocmVmPScjZzItNzgnLz4KPHVzZSB4PScyMDYuMTAwOTE0JyB5PSctNDIuNjU0OTA5JyB4bGluazpocmVmPScjZzEtMCcvPgo8dXNlIHg9JzIxNC43Nzk0NzMnIHk9Jy00Mi42NTQ5MDknIHhsaW5rOmhyZWY9JyNnNC00OScvPgo8dXNlIHg9JzE5Ni42MjY0MicgeT0nLTM3Ljg3MjgyNCcgeGxpbms6aHJlZj0nI2cwLTg4Jy8+Cjx1c2UgeD0nMjA1LjM0OTMxJyB5PSctNC4xMTQ4MDMnIHhsaW5rOmhyZWY9JyNnNC00OCcvPgo8dXNlIHg9JzIyMy4wMTUyMScgeT0nLTIyLjcyOTUyMycgeGxpbms6aHJlZj0nI2czLTEyMCcvPgo8dXNlIHg9JzIzMS44ODQ2NTknIHk9Jy0yOC4yMjAwNDInIHhsaW5rOmhyZWY9JyNnNC01MCcvPgo8dXNlIHg9JzIzMS44ODQ2NTknIHk9Jy0xOC4zMTA2MjMnIHhsaW5rOmhyZWY9JyNnMi0xMDUnLz4KPC9nPgo8L3N2Zz4KPCEtLSBERVBUSD0wIC0tPg==" alt="y = \sqrt{\sum_0^{N-1} x_i^2}"/></p>
+</div><p>The goal is to compute the derivatives of <code class="docutils literal notranslate"><span class="pre">y</span></code> with respect to all
+input vector elements using adjoint mode.</p>
+<p>The algorithm can be implemented in C++ code as:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">double</span><span class="o">&gt;</span><span class="w"> </span><span class="n">xsqr</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">  </span><span class="n">xsqr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="kt">double</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="n">sum_elements</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">));</span>
+</code></pre></div>
+</div>
+<p>For this example, we assume that the <code class="docutils literal notranslate"><span class="pre">sum_elements</span></code> is an external function
+implemented in a library that we do not have source code of.
+It has the prototype:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span class="kt">double</span><span class="w"> </span><span class="nf">sum_elements</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="kt">double</span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+</code></pre></div>
+</div>
+<h2 id="external-function-for-adjoint-mode">External Function For Adjoint Mode<a class="headerlink" href="#external-function-for-adjoint-mode" title="Permalink to this heading">¶</a></h2>
+<p>To use the external function, we follow this procedure:</p>
+<ol class="arabic simple">
+<li><p>At the point of the call, convert the values of the input active variables
+to the underlying plain data type (<code class="docutils literal notranslate"><span class="pre">double</span></code>)</p></li>
+<li><p>Call the external function passively</p></li>
+<li><p>Assign the result values to active output variables so the tape recording
+can continue</p></li>
+<li><p>Store the tape slots of the inputs and outputs with a checkpoint callback object
+and register it with the tape.</p></li>
+<li><p>When computing adjoints, this callback needs to load the adjoint of the outputs,
+propagate to them to the inputs manually,
+and increment the input adjoints by these values.</p></li>
+</ol>
+<p>We put all the functionality into a callback object.
+We derive from the <a class="desctype reference internal" href="ref/chkpt_cb.html#_CPPv4I0E18CheckpointCallback" title="CheckpointCallback (C++ class) — Base class of any checkpoint callbacks associated with the given TapeType."><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">CheckpointCallback</span></code></a> base class
+and implement at least the virtual method <a class="reference internal" href="ref/chkpt_cb.html#_CPPv4N18CheckpointCallback14computeAdjointEP8TapeType" title="CheckpointCallback::computeAdjoint (C++ function) — This function is called by XAD during rolling back the tape, giving a reference to itself. Gives weak exception guarantee - if this user-implemented function throws an exception, the tape is in an undefined state and needs to be reset/re-initialized before it can be used again."><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">CheckpointCallback::computeAdjoint()</span></code></a>.
+This method gets called during tape rollback.
+We also place the forward computation within the same object
+(this could also be done outside of the callback class).
+The declaration of our callback class looks like this:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">Tape</span><span class="o">&gt;</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">ExternalSumElementsCallback</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">xad</span><span class="o">::</span><span class="n">CheckpointCallback</span><span class="o">&lt;</span><span class="n">Tape</span><span class="o">&gt;</span>
+<span class="p">{</span>
+<span class="k">public</span><span class="o">:</span>
+<span class="w">  </span><span class="k">typedef</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Tape</span><span class="o">::</span><span class="n">slot_type</span><span class="w">   </span><span class="n">slot_type</span><span class="p">;</span><span class="w">    </span><span class="c1">// type for slot in the tape</span>
+<span class="w">  </span><span class="k">typedef</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Tape</span><span class="o">::</span><span class="n">value_type</span><span class="w">  </span><span class="n">value_type</span><span class="p">;</span><span class="w">   </span><span class="c1">// double</span>
+<span class="w">  </span><span class="k">typedef</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">Tape</span><span class="o">::</span><span class="n">active_type</span><span class="w"> </span><span class="n">active_type</span><span class="p">;</span><span class="w">  </span><span class="c1">// AReal&lt;double&gt;</span>
+
+<span class="w">  </span><span class="n">active_type</span><span class="w"> </span><span class="nf">computeExternal</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">active_type</span><span class="o">*</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">);</span><span class="w">  </span><span class="c1">// forward computation</span>
+<span class="w">  </span><span class="kt">void</span><span class="w"> </span><span class="nf">computeAdjoint</span><span class="p">(</span><span class="n">Tape</span><span class="o">*</span><span class="w"> </span><span class="n">tape</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="p">;</span><span class="w">                  </span><span class="c1">// adjoint computation</span>
+
+<span class="k">private</span><span class="o">:</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">slot_type</span><span class="o">&gt;</span><span class="w"> </span><span class="n">inputSlots_</span><span class="p">;</span><span class="w">              </span><span class="c1">// slots of the inputs in tape</span>
+<span class="w">  </span><span class="n">slot_type</span><span class="w"> </span><span class="n">outputSlot_</span><span class="p">;</span><span class="w">                           </span><span class="c1">// slot of the output in tape</span>
+<span class="p">};</span>
+</code></pre></div>
+</div>
+<p>We declare it as a template for arbitrary tape types,
+which is good practice as it allows to reuse
+this implementation with higher order derivatives too.</p>
+<h3 id="computeexternal-method"><code class="docutils literal notranslate"><span class="pre">computeExternal</span></code> Method<a class="headerlink" href="#computeexternal-method" title="Permalink to this heading">¶</a></h3>
+<p>Within the <code class="docutils literal notranslate"><span class="pre">computeExternal</span></code> method,
+we first store the slots in the tape for the input variables,
+as we will need them during adjoint computation to increment the corresponding
+adjoints.
+We use the <code class="docutils literal notranslate"><span class="pre">inputSlots_</span></code> member vector to keep this information:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">  </span><span class="n">inputSlots_</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">getSlot</span><span class="p">());</span>
+</code></pre></div>
+</div>
+<p>Then we create a copy of the active inputs and store them in a vector of passive
+values,
+with which we can call the external function:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">value_type</span><span class="o">&gt;</span><span class="w"> </span><span class="n">x_p</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">  </span><span class="n">x_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+<span class="n">value_type</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum_elements</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x_p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+</code></pre></div>
+</div>
+<p>We now need to store this result in an active variable,
+register it as an output of the external function
+(to allow the tape to continue recording dependent variables),
+and keep its slot in the tape for the later adjoint computation:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span class="n">active_type</span><span class="w"> </span><span class="n">ret</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="n">Tape</span><span class="o">::</span><span class="n">getActive</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">registerOutput</span><span class="p">(</span><span class="n">ret</span><span class="p">);</span>
+<span class="n">outputSlot_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ret</span><span class="p">.</span><span class="n">getSlot</span><span class="p">();</span>
+</code></pre></div>
+</div>
+<p>Finally we need to insert the callback into the tape,
+hence requesting it to be called during adjoint rollback of the tape,
+and return:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span class="n">Tape</span><span class="o">::</span><span class="n">getActive</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">insertCallback</span><span class="p">(</span><span class="k">this</span><span class="p">);</span>
+<span class="k">return</span><span class="w"> </span><span class="n">ret</span><span class="p">;</span>
+</code></pre></div>
+</div>
+<h3 id="computeadjoint-method"><code class="docutils literal notranslate"><span class="pre">computeAdjoint</span></code> Method<a class="headerlink" href="#computeadjoint-method" title="Permalink to this heading">¶</a></h3>
+<p>The <code class="docutils literal notranslate"><span class="pre">computeAdjoint</span></code> method gets called by XAD during tape rollback.
+We need to override this method and implement the manual adjoint code.
+For a simple sum operation, this is straightforward:
+all input adjoints are equal to the output adjoint since all
+partial derivatives are 1.
+Thus we need to obtain the output adjoint and increment all input adjoints by
+this value:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span class="n">value_type</span><span class="w"> </span><span class="n">output_adj</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tape</span><span class="o">-&gt;</span><span class="n">getAndResetOutputAdjoint</span><span class="p">(</span><span class="n">outputSlot_</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">inputSlots_</span><span class="p">.</span><span class="n">size</span><span class="p">();</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">  </span><span class="n">tape</span><span class="o">-&gt;</span><span class="n">incrementAdjoint</span><span class="p">(</span><span class="n">inputSlots_</span><span class="p">[</span><span class="n">i</span><span class="p">],</span><span class="w"> </span><span class="n">output_adj</span><span class="p">);</span>
+</code></pre></div>
+</div>
+<p>The function <a class="reference internal" href="ref/tape.html#_CPPv4N4Tape24getAndResetOutputAdjointE9slot_type" title="Tape::getAndResetOutputAdjoint (C++ function) — Obtains and resets the output adjoint to 0"><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">Tape::getAndResetOutputAdjoint()</span></code></a> obtains the
+adjoint value corresponding to the given slot and resets it to zero.
+This reset is necessary in general as the output variable may
+have been overwriting other values in the forward computation.
+The <a class="reference internal" href="ref/tape.html#_CPPv4N4Tape16incrementAdjointE9slot_typeRK1T" title="Tape::incrementAdjoint (C++ function) — Increments the adjoint of the given slot by the value x."><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">Tape::incrementAdjoint()</span></code></a> function simply
+increments the adjoint with the given slot by the given value.</p>
+<h3 id="wrapper-function">Wrapper Function<a class="headerlink" href="#wrapper-function" title="Permalink to this heading">¶</a></h3>
+<p>With the checkpointing callback class in place,
+we can implement a <code class="docutils literal notranslate"><span class="pre">sum_elements</span></code> overload for <a class="desctype reference internal" href="ref/areal.html#_CPPv4I0E5AReal" title="AReal (C++ class) — Defines and active data type version of the underlying type T that tracks derivatives on a tape for adjoint computation."><code class="xref cpp cpp-class docutils literal notranslate"><span class="pre">AReal</span></code></a> that
+wraps the creation of this callback:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="n">xad</span><span class="o">::</span><span class="n">AReal</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sum_elements</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">xad</span><span class="o">::</span><span class="n">AReal</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">typedef</span><span class="w"> </span><span class="k">typename</span><span class="w"> </span><span class="nc">xad</span><span class="o">::</span><span class="n">AReal</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;::</span><span class="n">tape_type</span><span class="w"> </span><span class="n">tape_type</span><span class="p">;</span>
+<span class="w">  </span><span class="n">tape_type</span><span class="o">*</span><span class="w"> </span><span class="n">tape</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">tape_type</span><span class="o">::</span><span class="n">getActive</span><span class="p">();</span>
+<span class="w">  </span><span class="n">ExternalSumElementsCallback</span><span class="o">&lt;</span><span class="n">tape_type</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">ckp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">ExternalSumElementsCallback</span><span class="o">&lt;</span><span class="n">tape_type</span><span class="o">&gt;</span><span class="p">;</span>
+<span class="w">  </span><span class="n">tape</span><span class="o">-&gt;</span><span class="n">pushCallback</span><span class="p">(</span><span class="n">ckp</span><span class="p">);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">ckp</span><span class="o">-&gt;</span><span class="n">computeExternal</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<p>This function dynamically allocates the checkpoint callback object
+and lets the tape manage its destruction through the <a class="reference internal" href="ref/tape.html#_CPPv4N4Tape12pushCallbackE13callback_type" title="Tape::pushCallback (C++ function) — Let this tape handle the de-allocation of the given callback."><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">Tape::pushCallback()</span></code></a>
+function.
+This call simply ensures that the callback object is destroyed
+when the tape is destroyed,
+making sure that no memory is leaked.
+If the callback object was managed elsewhere, this call would not be necessary.
+It then redirects the computation to the <code class="docutils literal notranslate"><span class="pre">computeExternal</span></code> function
+of the checkpoint callback class.
+Using this wrapper class, the <code class="docutils literal notranslate"><span class="pre">sum_elements</span></code> function can be used for active types
+in the same fashion as the original external function <code class="docutils literal notranslate"><span class="pre">sum_elements</span></code> for <code class="docutils literal notranslate"><span class="pre">double</span></code>.
+Defining it as a template allows us to re-use this function for higher-order derivatives,
+should we need them in future.</p>
+<h3 id="call-site">Call-Site<a class="headerlink" href="#call-site" title="Permalink to this heading">¶</a></h3>
+<p>The call site then can be implemented as
+(assuming that <code class="docutils literal notranslate"><span class="pre">x_ad</span></code> is the vector holding the independent variables, already registered on tape):</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span class="n">tape</span><span class="p">.</span><span class="n">newRecording</span><span class="p">();</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">AD</span><span class="o">&gt;</span><span class="w"> </span><span class="n">xsqr</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">  </span><span class="n">xsqr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">x_ad</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x_ad</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<span class="n">AD</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sqrt</span><span class="p">(</span><span class="n">sum_elements</span><span class="p">(</span><span class="n">xsqr</span><span class="p">.</span><span class="n">data</span><span class="p">(),</span><span class="w"> </span><span class="n">n</span><span class="p">));</span><span class="w"> </span><span class="c1">// calls external function wrapper</span>
+
+<span class="n">tape</span><span class="p">.</span><span class="n">registerOutput</span><span class="p">(</span><span class="n">y</span><span class="p">);</span>
+<span class="n">derivative</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1.0</span><span class="p">;</span>
+<span class="n">tape</span><span class="p">.</span><span class="n">computeAdjoints</span><span class="p">();</span>
+
+<span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;y = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+<span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">cout</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;dy/dx&quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot; = &quot;</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="n">derivative</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="w"> </span><span class="o">&lt;&lt;</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">;</span>
+</code></pre></div>
+</div>
+<p>This follows exactly the same procedure as given in <a class="reference internal" href="basic.html#tutorial-adj"><span class="std std-ref">Adjoint Mode</span></a>.</p>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p>This example is included with XAD (<a class="reference external" href="https://github.com/xcelerit/XAD/tree/main/samples/external_function">external_function</a>).</p>
+</div>
+<h2 id="external-function-for-forward-mode">External Function For Forward Mode<a class="headerlink" href="#external-function-for-forward-mode" title="Permalink to this heading">¶</a></h2>
+<p>Since forward mode involves no tape,
+a manual implementation of the derivative computation needs to be implemented
+together with computing the value.
+The manual derivatives can be updated directly in the output values
+using the <a class="reference internal" href="ref/complex.html#_CPPv4I0E10derivativeNSt7complexI1TEERKNSt7complexI5ARealI1TEEE" title="derivative (C++ function) — Returns the adjoints of the z variable, represented as a complex number of the underlying double type."><code class="xref cpp cpp-func docutils literal notranslate"><span class="pre">derivative()</span></code></a> function.</p>
+<p>In our example, we can implement the external function in forward mode as:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><code><span class="k">template</span><span class="w"> </span><span class="o">&lt;</span><span class="k">class</span><span class="w"> </span><span class="nc">T</span><span class="o">&gt;</span>
+<span class="n">xad</span><span class="o">::</span><span class="n">FReal</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">sum_elements</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">xad</span><span class="o">::</span><span class="n">FReal</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;*</span><span class="w"> </span><span class="n">x</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">n</span><span class="p">)</span>
+<span class="p">{</span>
+<span class="w">  </span><span class="k">typedef</span><span class="w"> </span><span class="n">xad</span><span class="o">::</span><span class="n">FReal</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">active_type</span><span class="p">;</span>
+
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">vector</span><span class="o">&lt;</span><span class="n">T</span><span class="o">&gt;</span><span class="w"> </span><span class="n">x_p</span><span class="p">(</span><span class="n">n</span><span class="p">);</span>
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">    </span><span class="n">x_p</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+<span class="w">  </span><span class="n">T</span><span class="w"> </span><span class="n">y_p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sum_elements</span><span class="p">(</span><span class="o">&amp;</span><span class="n">x_p</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="n">n</span><span class="p">);</span>
+
+<span class="w">  </span><span class="n">active_type</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y_p</span><span class="p">;</span>
+
+<span class="w">  </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">n</span><span class="p">;</span><span class="w"> </span><span class="o">++</span><span class="n">i</span><span class="p">)</span>
+<span class="w">    </span><span class="n">derivative</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">derivative</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]);</span>
+
+<span class="w">  </span><span class="k">return</span><span class="w"> </span><span class="n">y</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<p>We first extract the passive values from the <code class="docutils literal notranslate"><span class="pre">x</span></code> vector and call the
+external library function to get the passive output value <code class="docutils literal notranslate"><span class="pre">y_p</span></code>.
+This value is then assigned to the active output variable <code class="docutils literal notranslate"><span class="pre">y</span></code>,
+which also initializes its derivative to <code class="docutils literal notranslate"><span class="pre">0</span></code>.</p>
+<p>As we have a simple sum in this example,
+the derivative of the output
+is a sum of the derivatives of the inputs,
+which is computed by the loop in the end.</p>
+<div class="seealso admonition">
+<p class="admonition-title">See also</p>
+<p>This example is included with XAD (<code class="docutils literal notranslate"><span class="pre">external_function</span></code>).</p>
+</div>
+
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      April  2023
+    
+  </small>
+</div>
+
+
+  
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+    <nav class="md-footer__inner md-grid" aria-label="Footer" >
+      
+        
+        <a href="basic.html" class="md-footer__link md-footer__link--prev" aria-label="Previous: Basic Usage" rel="prev">
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+          </div>
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              Basic Usage
+            </div>
+          </div>
+        </a>
+      
+      
+        
+        <a href="checkpointing.html" class="md-footer__link md-footer__link--next" aria-label="Next: Checkpointing" rel="next">
+          <div class="md-footer__title">
+            <div class="md-ellipsis">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              Checkpointing
+            </div>
+          </div>
+          <div class="md-footer__button md-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4Z"/></svg>
+          </div>
+        </a>
+      
+    </nav>
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2010-2023, Xcelerit Computing Ltd.
+        
+    </div>
+  
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["toc.follow", "navigation.sections", "navigation.tracking", "search.highlight", "search.share"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+      
+        <script src="_static/sphinx_immaterial_theme.cea6a0c1d5b0618cf.min.js"></script>
+    
+  </body>
+</html>
